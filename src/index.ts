@@ -765,6 +765,34 @@ class AtomicCalendarRevive extends LitElement {
 				} else i++;
 			}
 		}
+
+		// check if event is multi-days, them split it out
+		if (
+			this._config.splitMultiDayEvents &&
+			moment(days[0][0].startTime).isBefore(days[0][0].endTime) &&
+			days[0].length > 1
+		) {
+			let i = moment();
+			while (i < days[0][0].endTime) {
+				i = moment(i).add(1, 'day');
+
+				const multiEv = {
+					eventClass: '',
+					config: '',
+					start: { dateTime: moment(days[0][0].startTime) },
+					end: { dateTime: moment(days[0][0].endTime) },
+					summary: days[0][0].summary,
+					isFinished: false,
+					htmlLink: days[0][0].htmlLink,
+				};
+				const multiEvent = new EventClass(multiEv, this._config, '');
+				multiEvent.isEmpty = false;
+				const d: any[] = [];
+				d.push(multiEvent);
+				days.unshift(d);
+			}
+		}
+
 		// check if no events for today and push a "no events" fake event
 		if (
 			this._config.showNoEventsForToday &&

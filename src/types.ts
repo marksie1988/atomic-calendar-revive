@@ -35,6 +35,7 @@ export interface atomicCardConfig extends LovelaceCardConfig {
 	showPrivate?: boolean;
 	showHiddenText?: boolean;
 	hiddenEventText?: string;
+	splitMultiDayEvents?: boolean;
 
 	// color and font settings
 	nameColor?: string;
